@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = {
-	koa: require('./koa');
-}
+	koa: require('./koa'),
+};
