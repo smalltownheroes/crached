@@ -1,0 +1,24 @@
+{
+  "name": "crached",
+  "version": "0.0.1",
+  "description": "Cashing framework that doesn't hammer your backend when keys expire",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smalltownheroes/crached.git"
+  },
+  "keywords": [
+    "caching",
+    "express",
+    "koa"
+  ],
+  "author": "Ilja Strobbe & Jan Lievens",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/smalltownheroes/crached/issues"
+  },
+  "homepage": "https://github.com/smalltownheroes/crached#readme"
+}
