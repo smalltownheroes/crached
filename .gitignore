@@ -1,0 +1,10 @@
+npm-debug.log
+node_modules
+
+report
+
+.DS_Store
+
+*.rdb
+*.swp
+

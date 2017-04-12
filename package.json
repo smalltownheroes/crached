@@ -4,7 +4,7 @@
   "description": "Cashing framework that doesn't hammer your backend when keys expire",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/index.js --timeout 5000 $MOCHA_OPTIONS"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,12 @@
   "bugs": {
     "url": "https://github.com/smalltownheroes/crached/issues"
   },
-  "homepage": "https://github.com/smalltownheroes/crached#readme"
+  "homepage": "https://github.com/smalltownheroes/crached#readme",
+  "devDependencies": {
+    "async": "^2.3.0",
+    "chai": "^3.5.0",
+    "lodash": "^4.17.4",
+    "lru-cache": "^4.0.2",
+    "mocha": "^3.2.0"
+  }
 }
