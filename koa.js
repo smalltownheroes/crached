@@ -5,9 +5,9 @@ const cacheMiddelware = (ttl, shouldCache, calculateKey) => {
 	const fetching = {};
 	const queue = {};
 	return function* (next) {
-		const enabled = yield shouldCache(this.request);
+		const enabled = yield shouldCache(this);
 		if (enabled) {
-			const key = calculateKey ? calculateKey(this.request) : `${this.request.path}?${this.request.querystring}`;
+			const key = calculateKey ? calculateKey(this) : `${this.request.path}?${this.request.querystring}`;
 			if (cache[key]) {
 				this.response.body = cache[key];
 			} else {
