@@ -31,6 +31,9 @@ class Util {
 					}
 					this.fetching[cacheKey] = false;
 					return Promise.resolve(result);
+				}).catch(err => {
+					this.fetching[cacheKey] = false;
+					throw err;
 				});
 			}
 		}
