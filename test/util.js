@@ -55,7 +55,6 @@ describe('Util', () => {
 						.then(result => {
 							cb(result);
 						}).catch(err => {
-							console.log(i);
 							cb(null, err);
 						});
 				}, Math.floor((Math.random() * 100) + 1))
