@@ -32,6 +32,11 @@ class Util {
 					this.fetching[cacheKey] = false;
 					return Promise.resolve(result);
 				}).catch(err => {
+					if (this.queue[cacheKey]) {
+						while (this.queue[cacheKey].length > 0) {
+							this.queue[cacheKey].shift().reject(err);
+						}
+					}
 					this.fetching[cacheKey] = false;
 					throw err;
 				});

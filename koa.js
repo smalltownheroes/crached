@@ -33,6 +33,11 @@ const cacheMiddelware = (ttl, shouldCache, calculateKey) => {
 						}
 						fetching[key] = false;
 					} catch (err) {
+						if (queue[key]) {
+							while (queue[key].length > 0) {
+								queue[key].shift().reject(err);
+							}
+						}
 						fetching[key] = false;
 						throw err;
 					}
