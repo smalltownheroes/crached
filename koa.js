@@ -33,8 +33,11 @@ const cacheMiddelware = (ttl, shouldCache, calculateKey) => {
 						}
 						fetching[key] = false;
 					} catch (err) {
+						console.error('CRACHED encountered error!', err);
+						console.log('CRACHED has queue?', queue[key]);
 						if (queue[key]) {
 							while (queue[key].length > 0) {
+								console.log('CRACHED rejecting deferreds...');
 								queue[key].shift().reject(err);
 							}
 						}

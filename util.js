@@ -32,8 +32,11 @@ class Util {
 					this.fetching[cacheKey] = false;
 					return Promise.resolve(result);
 				}).catch(err => {
+					console.error('CRACHED encountered error!', err);
+					console.log('CRACHED has queue?', this.queue[cacheKey]);
 					if (this.queue[cacheKey]) {
 						while (this.queue[cacheKey].length > 0) {
+							console.log('CRACHED rejecting deferreds...');
 							this.queue[cacheKey].shift().reject(err);
 						}
 					}
