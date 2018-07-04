@@ -1,6 +1,6 @@
 {
   "name": "crached",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Cashing framework that doesn't hammer your backend when keys expire",
   "main": "index.js",
   "scripts": {

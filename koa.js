@@ -1,5 +1,18 @@
 'use strict';
 
+const defer = () => {
+	if (typeof Promise !== 'undefined' && Promise.defer) {
+		return Promise.defer();
+	} else {
+		const deferred = {};
+		deferred.promise = new Promise((resolve, reject) => {
+			deferred.resolve = resolve;
+			deferred.reject = reject;
+		});
+		return deferred;
+	}
+};
+
 const cacheMiddelware = (ttl, shouldCache, calculateKey) => {
 	const cache = {};
 	const fetching = {};
@@ -12,7 +25,7 @@ const cacheMiddelware = (ttl, shouldCache, calculateKey) => {
 				this.response.body = cache[key];
 			} else {
 				if (fetching[key]) {
-					const deferred = Promise.defer();
+					const deferred = defer();
 					queue[key] = queue[key] || [];
 					queue[key].push(deferred);
 					this.response.body = yield deferred.promise;
@@ -33,11 +46,8 @@ const cacheMiddelware = (ttl, shouldCache, calculateKey) => {
 						}
 						fetching[key] = false;
 					} catch (err) {
-						console.error('CRACHED encountered error!', err);
-						console.log('CRACHED has queue?', queue[key]);
 						if (queue[key]) {
 							while (queue[key].length > 0) {
-								console.log('CRACHED rejecting deferreds...');
 								queue[key].shift().reject(err);
 							}
 						}

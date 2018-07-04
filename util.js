@@ -8,6 +8,19 @@ class Util {
 		this.queue = {};
 	}
 
+	defer() {
+		if (typeof Promise !== 'undefined' && Promise.defer) {
+			return Promise.defer();
+		} else {
+			const deferred = {};
+			deferred.promise = new Promise((resolve, reject) => {
+				deferred.resolve = resolve;
+				deferred.reject = reject;
+			});
+			return deferred;
+		}
+	}
+
 	getOrFetch(key, fetchPromise, calculateKey) {
 		const cacheKey = calculateKey ? calculateKey(key) : key;
 		const cachedItem = this.cache.get(cacheKey);
@@ -15,7 +28,7 @@ class Util {
 			return Promise.resolve(cachedItem);
 		} else {
 			if (this.fetching[cacheKey]) {
-				const deferred = Promise.defer();
+				const deferred = this.defer();
 				this.queue[cacheKey] = this.queue[cacheKey] || [];
 				this.queue[cacheKey].push(deferred);
 				return deferred.promise;
@@ -32,11 +45,8 @@ class Util {
 					this.fetching[cacheKey] = false;
 					return Promise.resolve(result);
 				}).catch(err => {
-					console.error('CRACHED encountered error!', err);
-					console.log('CRACHED has queue?', this.queue[cacheKey]);
 					if (this.queue[cacheKey]) {
 						while (this.queue[cacheKey].length > 0) {
-							console.log('CRACHED rejecting deferreds...');
 							this.queue[cacheKey].shift().reject(err);
 						}
 					}
