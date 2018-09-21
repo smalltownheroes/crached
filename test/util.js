@@ -66,4 +66,38 @@ describe('Util', () => {
 		});
 	});
 
+	it('Does not end up in a bad state if fetchPromise throws', done => {
+		const fetchPromise = () => {throw new Error('Bam');};
+		const util = new Util(lruCache);
+		util.getOrFetch('someKey', fetchPromise)
+			.catch(() => {
+				expect(util.fetching['someKey']).to.be.eql(undefined);
+				done();
+			});
+	});
+
+	it('Releases all waiting promises', done => {
+		let resolvePromise;
+		const thePromise = new Promise((resolve, reject) => {
+			resolvePromise = resolve;
+		});
+		const fetchPromise = () => thePromise;
+		const util = new Util(lruCache);
+		const after = (count, func) => {
+			let countdown = count;
+			return () => {
+				if (--countdown === 0) {
+					func();
+				}
+			}
+		};
+		const collect = after(3, done);
+		util.getOrFetch('someKey', fetchPromise)
+			.then(collect);
+		util.getOrFetch('someKey', fetchPromise)
+			.then(collect);
+		util.getOrFetch('someKey', fetchPromise)
+			.then(collect);
+		resolvePromise();
+	});
 });
